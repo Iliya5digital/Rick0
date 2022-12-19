@@ -1,0 +1,3 @@
+$server = 'servidor'
+$escopo = '0.0.0.0'
+% {Get-DhcpServerv4Lease -ComputerName " $server " -ScopeId $escopo | Select-Object @{expression={$_.hostname.ToUpper()}; label='HOSTNAME'},@{expression={$_.IPAddress}; label='IP'},@{Expression={$_.clientid.ToUpper() -replace "-",""};label='MAC'},@{expression={$_.AddressState.ToUpper()}; label='RESERVA'}|Sort-Object "HOSTNAME"}|Convertto-Csv -NTI | % {$_.Replace('"','')}|? { $_ -ne "" }|Select-Object -Skip 1|Out-File -FilePath ".\DHCP.txt" -Encoding Ascii
